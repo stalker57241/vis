@@ -427,7 +427,7 @@ ui_arrange(Vis *vis, enum UiLayout layout)
 	int fixedsize = 0;
 	int nfixed = 0;
 	for (Win *win = vis->windows; win; win = win->next) {
-		if (win->options & UI_OPTION_ONELINE)
+		if (win->options & UI_OPTION_ONELINE || win->max_size == 1)
 			m++;
 		else {
 			fixedsize += win->max_size;
@@ -448,7 +448,7 @@ ui_arrange(Vis *vis, enum UiLayout layout)
 	int width = ((tui->width - fixedsize) / MAX(1, n - nfixed)) - 1;
 	int height = (max_height - fixedsize) / MAX(1, n - nfixed);
 	for (Win *win = vis->windows; win; win = win->next) {
-		if (win->options & UI_OPTION_ONELINE)
+		if (win->options & UI_OPTION_ONELINE || win->max_size == 1)
 			continue;
 		n--;
 		if (fixedsize) nfixed -= win->max_size;
@@ -483,7 +483,7 @@ ui_arrange(Vis *vis, enum UiLayout layout)
 		y = max_height;
 
 	for (Win *win = vis->windows; win; win = win->next) {
-		if (!(win->options & UI_OPTION_ONELINE))
+		if (!(win->options & UI_OPTION_ONELINE || win->max_size == 1))
 			continue;
 		ui_window_resize(win, tui->width, 1);
 		ui_window_move(win, 0, y++);
